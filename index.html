@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f8eee9"><meta name="description" content="A simple two-page attendance calendar."><link rel="manifest" href="manifest.json"><title>Attendance Bachao ♡</title>
+<style>
+:root{--bg:#f8eee9;--paper:#fffaf7;--ink:#49383b;--muted:#947d80;--line:#ead8d5;--pink:#d88e9e;--pinklight:#f3dce1;--green:#527b5b;--greenlight:#e4eee4;--red:#a85d62;--gold:#b58c4c}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif}.app{max-width:760px;margin:auto;padding:18px 14px 94px}.head{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 20px}.eyebrow{font:700 10px Arial,sans-serif;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}.title{font-size:clamp(27px,6vw,36px);margin:5px 0}.subtitle{font:12px Arial,sans-serif;color:var(--muted)}.bow{font-size:32px}.tabs{position:fixed;bottom:0;left:0;right:0;z-index:5;background:#fffaf7f2;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:9px 12px calc(9px + env(safe-area-inset-bottom))}.tabs button{width:min(50%,220px);border:0;background:none;color:var(--muted);padding:9px;border-radius:12px;font:13px Arial,sans-serif}.tabs button.active{background:var(--pinklight);color:var(--ink);font-weight:700}.page{display:none}.page.active{display:block}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:15px;margin:12px 0}.monthbar{display:flex;align-items:center;justify-content:space-between;margin:8px 0 14px}.month{font-size:23px}.navbtn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:11px;padding:9px 13px;font-size:16px}.weekdays,.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.weekdays div{text-align:center;font:10px Arial,sans-serif;color:var(--muted);padding:7px 0}.date{min-height:58px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);padding:6px 3px;text-align:center}.date .n{font:13px Arial,sans-serif}.date .dots{display:flex;justify-content:center;gap:3px;margin-top:7px}.dot{width:5px;height:5px;border-radius:50%;background:var(--pink)}.date.selected{background:var(--pinklight);border-color:var(--pink)}.date.today{outline:2px solid var(--pink);outline-offset:1px}.date.blank{visibility:hidden}.dayheading{font-size:21px;font-weight:normal;margin:2px 0 12px}.classrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-top:1px solid var(--line)}.classrow:first-child{border-top:0}.classinfo{min-width:0}.subject{font:700 11px Arial,sans-serif;letter-spacing:.08em;color:var(--muted)}.faculty{font-size:16px;margin-top:4px}.time{font:12px Arial,sans-serif;color:var(--muted);margin-top:4px}.checkwrap{display:flex;align-items:center;gap:7px;font:12px Arial,sans-serif;white-space:nowrap}.checkwrap input{width:21px;height:21px;accent-color:var(--green)}.cancel{display:block;border:0;background:none;color:var(--muted);font:11px Arial,sans-serif;text-decoration:underline;margin:5px 0 0 auto;padding:3px}.state{font:11px Arial,sans-serif;color:var(--muted);text-align:right}.empty{font:13px Arial,sans-serif;color:var(--muted);text-align:center;padding:22px 8px}.summary{display:grid;grid-template-columns:1fr 1fr;gap:11px}.metric{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:15px;min-width:0}.metric .name{font:700 11px Arial,sans-serif;letter-spacing:.07em;color:var(--muted)}.percent{font-size:34px;margin:8px 0 5px}.small{font:12px Arial,sans-serif;color:var(--muted)}.bar{height:7px;background:var(--pinklight);border-radius:20px;margin-top:12px;overflow:hidden}.bar span{display:block;height:100%;background:var(--pink);border-radius:20px}.note{font:12px/1.5 Arial,sans-serif;color:var(--muted);margin:15px 3px}.legend{display:flex;gap:14px;flex-wrap:wrap;font:11px Arial,sans-serif;color:var(--muted);margin:12px 2px}.legend span{display:flex;align-items:center;gap:5px}.legend i{width:8px;height:8px;border-radius:50%;background:var(--pink)}.legend .g{background:var(--green)}@media(max-width:380px){.date{min-height:49px}.summary{grid-template-columns:1fr}.classrow{align-items:flex-start}.checkwrap{font-size:11px}}
+</style></head>
+<body><main class="app">
+<header class="head"><div><div class="eyebrow">your attendance, without the drama</div><h1 class="title">Attendance Bachao <span style="color:var(--pink)">♡</span></h1><div class="subtitle">A tiny calendar for getting through the semester.</div></div><div class="bow">🎀</div></header>
+<section id="calendarPage" class="page active">
+ <div class="card">
+  <div class="monthbar"><button class="navbtn" id="prev">‹</button><div class="month" id="monthLabel"></div><button class="navbtn" id="next">›</button></div>
+  <div class="weekdays"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
+  <div class="calendar" id="calendar"></div>
+  <div class="legend"><span><i></i> Classes scheduled</span><span><i class="g"></i> All attended</span></div>
+ </div>
+ <div class="card"><h2 class="dayheading" id="selectedHeading"></h2><div id="dayClasses"></div></div>
+</section>
+<section id="attendancePage" class="page">
+ <div class="sectiontitle" style="font-size:23px;margin:8px 2px 14px">Your attendance</div>
+ <div class="summary">
+  <article class="metric"><div class="name">3GPP · ALOK JOSHI</div><div class="percent" id="pct3">35.48%</div><div class="small" id="meta3">11 present / 31 classes</div><div class="bar"><span id="bar3"></span></div></article>
+  <article class="metric"><div class="name">5G · SAMRITI KALIA</div><div class="percent" id="pct5">36.11%</div><div class="small" id="meta5">13 present / 36 classes</div><div class="bar"><span id="bar5"></span></div></article>
+ </div>
+ <p class="note">Tick a class on the calendar when you attended it. Past unticked classes count as absent. Cancelled classes are excluded. Your percentages update automatically.</p>
+</section>
+</main>
+<nav class="tabs"><button class="active" data-page="calendarPage">▦ &nbsp; Calendar</button><button data-page="attendancePage">♡ &nbsp; Attendance</button></nav>
+<script>
+(()=>{
+const KEY='attendance-bachao-simple-v2';
+const today=new Date();today.setHours(0,0,0,0);
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parse=s=>new Date(s+'T12:00:00');
+const weekdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+// Corrected mapping: 3GPP belongs to Alok Joshi; 5G belongs to Samriti Kalia.
+const subjects={
+ '3GPP':{faculty:'Alok Joshi',p:11,t:31},
+ '5G':{faculty:'Samriti Kalia',p:13,t:36}
+};
+const timetable=[
+ {subject:'5G',day:2,start:'08:00',end:'09:00'},
+ {subject:'3GPP',day:3,start:'08:00',end:'09:00'},
+ {subject:'5G',day:3,start:'09:00',end:'10:00'},
+ {subject:'3GPP',day:4,start:'09:00',end:'10:00'},
+ {subject:'3GPP',day:5,start:'08:00',end:'09:00'},
+ {subject:'5G',day:6,start:'09:00',end:'10:00'}
+];
+let data={marks:{}};try{data=JSON.parse(localStorage.getItem(KEY))||data}catch(e){}
+let month=new Date(today.getFullYear(),today.getMonth(),1),selected=iso(today);
+const classesOn=date=>{let d=parse(date);return timetable.filter(x=>x.day===d.getDay()).map((x,i)=>({...x,date,id:date+'_'+x.subject+'_'+x.start}))};
+const markOf=c=>data.marks[c.id]||'unmarked';
+const classIsDue=c=>{let now=new Date(),d=parse(c.date);if(d<today)return true;if(d>today)return false;let [h,m]=c.end.split(':').map(Number);d.setHours(h,m,0,0);return now>=d};
+function totals(subject){let p=subjects[subject].p,t=subjects[subject].t;let start=new Date(2026,10,12),end=new Date(today.getFullYear(),today.getMonth()+2,0);for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){for(let c of classesOn(iso(d))){if(c.subject!==subject)continue;let status=markOf(c);if(status==='cancelled')continue;if(status==='present'){p++;t++}else if(status==='absent'||classIsDue(c)){t++}}}return {p,t,pct:t?p/t*100:0}}
+function renderStats(){for(let [s,id] of [['3GPP','3'],['5G','5']]){let x=totals(s);document.getElementById('pct'+id).textContent=x.pct.toFixed(2)+'%';document.getElementById('meta'+id).textContent=`${x.p} present / ${x.t} classes`;document.getElementById('bar'+id).style.width=Math.min(100,x.pct)+'%'}}
+function row(c){let st=markOf(c),cancel=st==='cancelled',checked=st==='present';return `<div class="classrow"><div class="classinfo"><div class="subject">${c.subject}</div><div class="faculty">${subjects[c.subject].faculty}</div><div class="time">${c.start}–${c.end}</div></div><div><label class="checkwrap"><input type="checkbox" data-attend="${c.id}" ${checked?'checked':''} ${cancel?'disabled':''}> Attended</label><button class="cancel" data-cancel="${c.id}">${cancel?'Cancelled · undo':'Cancel class'}</button><div class="state">${cancel?'Not counted':checked?'Present':classIsDue(c)?'Absent unless ticked':'Upcoming'}</div></div></div>`}
+function renderDay(){let d=parse(selected),cs=classesOn(selected);document.getElementById('selectedHeading').textContent=d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});document.getElementById('dayClasses').innerHTML=cs.length?cs.map(row).join(''):'<div class="empty">No classes scheduled for this day. Enjoy the breathing space ♡</div>'}
+function renderCalendar(){document.getElementById('monthLabel').textContent=month.toLocaleDateString('en-IN',{month:'long',year:'numeric'});let el=document.getElementById('calendar');el.innerHTML='';let offset=(new Date(month.getFullYear(),month.getMonth(),1).getDay()+6)%7;for(let i=0;i<offset;i++){let blank=document.createElement('div');blank.className='date blank';el.appendChild(blank)}let count=new Date(month.getFullYear(),month.getMonth()+1,0).getDate();for(let n=1;n<=count;n++){let d=new Date(month.getFullYear(),month.getMonth(),n),key=iso(d),cs=classesOn(key),b=document.createElement('button');b.className='date'+(key===selected?' selected':'')+(key===iso(today)?' today':'');let allDone=cs.length&&cs.every(c=>markOf(c)==='present'||markOf(c)==='cancelled');b.innerHTML=`<span class="n">${n}</span><div class="dots">${cs.length?`<i class="dot" style="background:${allDone?'var(--green)':'var(--pink)'}"></i>`:''}</div>`;b.onclick=()=>{selected=key;renderCalendar();renderDay()};el.appendChild(b)}}
+document.addEventListener('change',e=>{let b=e.target.closest('[data-attend]');if(!b)return;data.marks[b.dataset.attend]=b.checked?'present':'absent';save()});
+document.addEventListener('click',e=>{let b=e.target.closest('[data-cancel]');if(!b)return;let id=b.dataset.cancel;data.marks[id]=data.marks[id]==='cancelled'?'unmarked':'cancelled';save()});
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderCalendar();renderDay();renderStats()}
+document.getElementById('prev').onclick=()=>{month.setMonth(month.getMonth()-1);renderCalendar()};document.getElementById('next').onclick=()=>{month.setMonth(month.getMonth()+1);renderCalendar()};
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===b.dataset.page));if(b.dataset.page==='attendancePage')renderStats()});
+function renderAll(){renderCalendar();renderDay();renderStats()}renderAll();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
+</script></body></html>
